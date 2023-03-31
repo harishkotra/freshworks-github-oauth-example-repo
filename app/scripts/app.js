@@ -8,7 +8,6 @@ async function init() {
 }
 
 async function renderText() {
-  
   let createIssBtn = document.querySelector('.create-issue');
   createIssBtn.addEventListener('fwClick', createIssue);
 }
@@ -20,19 +19,28 @@ async function createIssue() {
     console.log(data);
     let body = {
       "title": data.ticket.subject,
-      "description": data.ticket.description_text
+      "body": data.ticket.description_text
     };
-    const createTicketResponse = client.request.invokeTemplate("createIssue", {
-      context: {}, 
+
+    const createTicketResponse = await client.request.invokeTemplate("createIssue", {
+      context: { }, 
       body: JSON.stringify(body)
     });
+    response = JSON.parse(createTicketResponse.response);
+    var ticketObj = { ticketID: data.ticket.id, issueID: response.id, issueNumber: response.number };
 
-    console.log("response from github", createTicketResponse);
+    client.interface.trigger("showNotify", {
+      type: "success",
+      message: "Yay 🎉! A Github issue is successfully created for this ticket"
+    /* The "message" should be plain text */
+    }).then(function(data) {
+    // data - success message
+    }).catch(function(error) {
+    // error - error object
+    });
+
+    console.log("logging", ticketObj);
   } catch (error) {
-    // failure operation
     console.log(error);
   }
-
-  
 }
-

@@ -1,7 +1,7 @@
 {
     "github_repo": {
         "display_name": "GitHub Repo Name : ",
-        "description": "Enter the GitHub Repository name Ex: <githubhandle>/<reponame>",
+        "description": "Enter Github Repo to create issues in. Format: username/reponame",
         "type": "text",
         "required": true
     }
